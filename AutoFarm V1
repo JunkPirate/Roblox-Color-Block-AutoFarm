@@ -1,0 +1,111 @@
+-- Gui to Lua
+-- Version: 3.2
+
+-- Instances:
+
+local ScreenGui = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local Stop_Start = Instance.new("TextButton")
+local Status = Instance.new("TextLabel")
+local Gradient = Instance.new("ImageLabel")
+
+--Properties:
+
+ScreenGui.Parent = game.CoreGui
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+Frame.Parent = ScreenGui
+Frame.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+Frame.BorderSizePixel = 3
+Frame.Position = UDim2.new(0.334319532, 0, 0.555282533, 0)
+Frame.Size = UDim2.new(0, 335, 0, 109)
+Frame.Draggable = true
+local UserInputService = game:GetService("UserInputService")
+
+local gui = game.CoreGui.ScreenGui.Frame
+
+local dragging
+local dragInput
+local dragStart
+local startPos
+
+local function update(input)
+	local delta = input.Position - dragStart
+	gui.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+end
+
+gui.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		dragging = true
+		dragStart = input.Position
+		startPos = gui.Position
+
+		input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then
+				dragging = false
+			end
+		end)
+	end
+end)
+
+gui.InputChanged:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+		dragInput = input
+	end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+	if input == dragInput and dragging then
+		update(input)
+	end
+end)
+
+Stop_Start.Name = "Stop_Start"
+Stop_Start.Parent = Frame
+Stop_Start.BackgroundColor3 = Color3.fromRGB(85, 255, 0)
+Stop_Start.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Stop_Start.BorderSizePixel = 5
+Stop_Start.Position = UDim2.new(0.223880604, 0, 0.266055048, 0)
+Stop_Start.Size = UDim2.new(0, 200, 0, 50)
+Stop_Start.Font = Enum.Font.SourceSans
+Stop_Start.Text = "Start"
+Stop_Start.TextColor3 = Color3.fromRGB(0, 0, 0)
+Stop_Start.TextScaled = true
+Stop_Start.TextSize = 14.000
+Stop_Start.TextWrapped = true
+Stop_Start.MouseButton1Down:connect(function()
+	game.CoreGui.ScreenGui.Frame.Status.Text = ("Status: Enabled") 
+	game.CoreGui.ScreenGui.Frame.Status.TextColor3 = Color3.new (0, 1, 0)
+	game.CoreGui.ScreenGui.Frame.Stop_Start.Text = ("Disable")
+	game.CoreGui.ScreenGui.Frame.Stop_Start.BackgroundColor3 = Color3.new (1, 0, 0)	
+	while true do
+		tweenService, tweenInfo = game:GetService("TweenService"), TweenInfo.new(3, Enum.EasingStyle.Linear)
+		tween = tweenService:Create(game:GetService("Players")["LocalPlayer"].Character.HumanoidRootPart, tweenInfo, {CFrame = CFrame.new(-66.1671448, 1571.24792, -112.98539)})
+		tween:Play()
+		wait (3)
+		tweenService, tweenInfo = game:GetService("TweenService"), TweenInfo.new(3, Enum.EasingStyle.Linear)
+		tween = tweenService:Create(game:GetService("Players")["LocalPlayer"].Character.HumanoidRootPart, tweenInfo, {CFrame = CFrame.new(10.9785213, 1558.72668, -134.49649)})
+		tween:Play()
+	end
+end)
+
+Status.Name = "Status"
+Status.Parent = Frame
+Status.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Status.BackgroundTransparency = 1.000
+Status.Position = UDim2.new(0.223880604, 0, -0.458715588, 0)
+Status.Size = UDim2.new(0, 200, 0, 50)
+Status.Font = Enum.Font.SourceSans
+Status.Text = "Status: Disabled"
+Status.TextColor3 = Color3.fromRGB(255, 0, 0)
+Status.TextScaled = true
+Status.TextSize = 14.000
+Status.TextWrapped = true
+
+Gradient.Name = "Gradient"
+Gradient.Parent = Frame
+Gradient.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Gradient.BackgroundTransparency = 1.000
+Gradient.Position = UDim2.new(-8.82148743e-06, 0, -0.00435048342, 0)
+Gradient.Size = UDim2.new(0, 335, 0, 109)
+Gradient.Image = "rbxassetid://43479241"
